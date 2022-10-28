@@ -28,10 +28,10 @@ window.addEventListener('load', () => {
     TODOlist.push(newTask);
     window.localStorage.setItem('tasks', JSON.stringify(TODOlist));
     inputField.value = '';
+    renderTasks();
   })
 
 
-  renderTasks();
 })
 
 function renderTasks() {
