@@ -1,8 +1,16 @@
 
 
 const TODOlist = JSON.parse(window.localStorage.getItem('tasks')) || [];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 
 window.addEventListener('load', () => {
+  const date  = new Date().toLocaleString('en-US', { month: 'short' });
+  const day = new Date().getDate();
+  const date_el  = document.querySelector('.today');
+  const todaysdate_el = document.createElement('h3');
+  todaysdate_el.innerText = `${date} ${day}`;
+  date_el.appendChild(todaysdate_el);
   renderTasks();
   const inputField = document.querySelector('#taskInput_field');
   const form = document.querySelector('#taskInput_form');
