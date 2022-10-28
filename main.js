@@ -1,13 +1,9 @@
-
-
-const TODOlist = JSON.parse(window.localStorage.getItem('tasks')) || [];
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
+const TODOlist = JSON.parse(window.localStorage.getItem('tasks')) || []; // get task from local storage and if not present then create an empty array
 
 window.addEventListener('load', () => {
-  const date  = new Date().toLocaleString('en-US', { month: 'short' });
+  const date = new Date().toLocaleString('en-US', { month: 'short' }); //get current month
   const day = new Date().getDate();
-  const date_el  = document.querySelector('.today');
+  const date_el = document.querySelector('.today');
   const todaysdate_el = document.createElement('h3');
   todaysdate_el.innerText = `${date} ${day}`;
   date_el.appendChild(todaysdate_el);
@@ -17,7 +13,7 @@ window.addEventListener('load', () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const task = inputField.value;
-    if (task === '' || task === null) return;
+    if (task === '' || task === null) return; //should not accept empty task
 
     const newTask = {
       id: Date.now(),
@@ -30,13 +26,13 @@ window.addEventListener('load', () => {
     inputField.value = '';
     renderTasks();
   })
-
-
 })
+
+
 
 function renderTasks() {
   const tasks = document.querySelector('.tasks');
-  tasks.innerHTML = '';
+  tasks.innerHTML = ''; // clear the list so tasks don't duplicate while re rendering the Task 
 
 
   TODOlist.forEach((task) => {
@@ -48,9 +44,9 @@ function renderTasks() {
     checkbox.checked = task.done;
 
     //update task status
-    checkbox.addEventListener('change', () => {
-      task.done = !task.done;
-      window.localStorage.setItem('tasks', JSON.stringify(TODOlist));
+    checkbox.addEventListener('change', () => { //checkbox change event
+      task.done = !task.done; //toggle task status
+      window.localStorage.setItem('tasks', JSON.stringify(TODOlist)); //update local storage
       renderTasks();
     })
 
@@ -60,8 +56,9 @@ function renderTasks() {
     const text = document.createElement('input');
     text.type = 'text';
     text.value = task.text;
+
     if (task.done) {
-      text.classList.add('done');
+      text.classList.add('done'); //add done class to text if task is done
     }
     text.setAttribute('readonly', true);
     const actions = document.createElement('div');
@@ -84,9 +81,9 @@ function renderTasks() {
 
     //update task text
     edit.addEventListener('click', () => {
-      text.removeAttribute('readonly');
-      text.focus();
-      text.addEventListener('blur', () => {
+      text.removeAttribute('readonly'); //remove readonly attribute
+      text.focus(); //focus on input field so that user can start typing
+      text.addEventListener('blur', () => { //when user clicks outside the input field then update the task
         text.setAttribute('readonly', true);
         task.text = text.value;
         window.localStorage.setItem('tasks', JSON.stringify(TODOlist));
@@ -96,9 +93,9 @@ function renderTasks() {
 
     //delete task
     deleteButton.addEventListener('click', () => {
-      TODOlist.splice(TODOlist.indexOf(task), 1);
-      window.localStorage.setItem('tasks', JSON.stringify(TODOlist));
-      renderTasks();
+      TODOlist.splice(TODOlist.indexOf(task), 1); //remove task from array
+      window.localStorage.setItem('tasks', JSON.stringify(TODOlist)); //updates  local storage
+      renderTasks(); //re-render tasks
     })
   })
 }
