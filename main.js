@@ -2,12 +2,10 @@
 
 const TODOlist = JSON.parse(window.localStorage.getItem('tasks')) || [];
 
-
 window.addEventListener('load', () => {
+  renderTasks();
   const inputField = document.querySelector('#taskInput_field');
   const form = document.querySelector('#taskInput_form');
-
-
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const task = inputField.value;
@@ -22,7 +20,6 @@ window.addEventListener('load', () => {
     TODOlist.push(newTask);
     window.localStorage.setItem('tasks', JSON.stringify(TODOlist));
     inputField.value = '';
-    renderTasks();
   })
 
 
@@ -88,6 +85,12 @@ function renderTasks() {
         renderTasks();
       })
     })
-    
+
+    //delete task
+    deleteButton.addEventListener('click', () => {
+      TODOlist.splice(TODOlist.indexOf(task), 1);
+      window.localStorage.setItem('tasks', JSON.stringify(TODOlist));
+      renderTasks();
+    })
   })
 }
