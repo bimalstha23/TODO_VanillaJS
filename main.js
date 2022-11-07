@@ -14,7 +14,6 @@ window.addEventListener('load', () => {
     e.preventDefault();
     const task = inputField.value;
     if (task === '' || task === null) return; //should not accept empty task
-
     const newTask = {
       id: Date.now(),
       text: task,
@@ -79,17 +78,23 @@ function renderTasks() {
     taskbox.append(text, actions);
     actions.append(edit, deleteButton);
 
+
     //update task text
     edit.addEventListener('click', () => {
       text.removeAttribute('readonly'); //remove readonly attribute
       text.focus(); //focus on input field so that user can start typing
       text.addEventListener('blur', () => { //when user clicks outside the input field then update the task
         text.setAttribute('readonly', true);
+        if(text.value===''||text.value===null){
+          text.value=task.text;
+          return;
+        }; 
         task.text = text.value;
         window.localStorage.setItem('tasks', JSON.stringify(TODOlist));
         renderTasks();
       })
     })
+
 
     //delete task
     deleteButton.addEventListener('click', () => {
